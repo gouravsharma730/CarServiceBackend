@@ -4,10 +4,9 @@ const verifyToken = require('../middleware/verifyToken');
 const Reviews = require('../models/RatingAndReview')
 
 router.post('/',verifyToken,(req,res)=>{
-    const userId = req.user.id;
     let review = req.body;
-    review.user = req.user.id;
     if(!review) return res.status(400).json({message:"Please add comment!"});
+    review.userName = req.user.userName;
     const reviews = new Reviews(review);
     reviews.save();
     return res.status(200).json({message:review});

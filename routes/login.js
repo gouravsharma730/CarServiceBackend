@@ -26,8 +26,7 @@ router.post('/',verifyToken, async function(req,res){
         }
         const matchPassword = await bcrypt.compare(req.body.password,userCheck[0]['password']);
         if(!matchPassword) res.status(201).json({message:"Incorrect password"});
-        const token = await jwt.sign({ id: userCheck[0]._id }, 'your_secret_key', { expiresIn: '700h' });
-        
+        const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
         const message =[{message:userCheck},{ token: token }]
         return res.status(201).json({message:message});
     }catch(error){

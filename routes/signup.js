@@ -3,7 +3,9 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const sendEmail = require('../utils/email');
+const path = require('path');
+let htmlFilePath = path.join(__dirname,'../static/signup.html');
 router.post('/',async function(req,res){
     try{
         if (!req.body.userName || !req.body.email || !req.body.password){
@@ -17,9 +19,14 @@ router.post('/',async function(req,res){
         await user.save();
         const token = jwt.sign({ _id: user._id }, 'your_secret_key', { expiresIn: '700h' });
         const message =[{message:`Hi ${userName}, Signup successful!!`},{ token: token }]
-        res.status(201).json({message:message});
+        const subject='Welcome to SpeedyShine - Confirm Your Registration';
+        const text =`Hello ${userName}, this is a confirmation email.`;
+        
+        await sendEmail(email,subject,text,htmlFilePath,userName)
+        return res.status(201).json({message:message});
     }catch(error){
-        res.status(500).json({message: error.message})
+        console.log("Error", error);
+        return res.status(500).json({message: error.message})
     }
 })
 
