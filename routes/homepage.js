@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
-router.get('/',function(req,res){
+const User = require('../models/User');
+const verifyToken = require('../middleware/verifyToken');
+router.get('/',verifyToken, async function(req,res){
     try{
-        res.status(201).json({message:"This is the home page of the app."})
+        const _id= req.user.id;
+        const profileData = await User.find({_id});
+        return res.status(201).json({message:profileData})
     }catch(err){
-        res.status(500).json({error:"this error is from Home page."})
+        res.status(500).json({error:err.message})
     }
 })
 
