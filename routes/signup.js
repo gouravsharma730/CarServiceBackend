@@ -21,7 +21,6 @@ router.post('/',async function(req,res){
         const message =[{message:`Hi ${userName}, Signup successful!!`},{ token: token }]
         const subject='Welcome to SpeedyShine - Confirm Your Registration';
         const text =`Hello ${userName}, this is a confirmation email.`;
-        
         await sendEmail(email,subject,text,htmlFilePath,userName)
         return res.status(201).json({message:message});
     }catch(error){

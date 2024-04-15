@@ -25,10 +25,9 @@ router.post('/',verifyToken, async function(req,res){
          return res.status(201).json({message:"User not found."});
         }
         const matchPassword = await bcrypt.compare(req.body.password,userCheck[0]['password']);
-        if(!matchPassword) res.status(201).json({message:"Incorrect password"});
+        if(!matchPassword) return res.status(201).json({message:"Incorrect password"});
         const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
-        const message =[{message:userCheck},{ token: token }]
-        return res.status(201).json({message:message});
+        return res.status(201).json({message:userCheck,token});
     }catch(error){
         return res.status(500).json({message: error.message});
     }
