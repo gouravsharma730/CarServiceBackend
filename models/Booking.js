@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
  const bookingSchema = new mongoose.Schema({
-    carDetails:[{
+    carDetails:{
         ownerId:String,
         carNumber:String,
         carModel:String,
@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
             type:String,
             default:"Pending"
         }
-    }],
+    },
     DateOfPickUp: Date,
     DateOfService:Date,
     DateOfCarDrop:Date,

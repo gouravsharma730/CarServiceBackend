@@ -13,7 +13,7 @@ router.post('/',async function(req,res){
         }
         const {userName,password,email,address,phoneNumber}= req.body;
         const checkUser= await User.find({email:email});
-        if(!checkUser)return res.status(409).json({message:"This Email is already registered with us."});
+        if(checkUser.length==1)return res.status(409).json({message:"This Email is already registered with us."});
         let hashedPassword = await bcrypt.hash(password,10);
         let user = new User({userName,email,password:hashedPassword,address,phoneNumber});
         await user.save();
