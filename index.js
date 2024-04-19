@@ -10,6 +10,7 @@ const booking = require('./routes/booking');
 const admin = require('./routes/admin');
 const reviews = require('./routes/reviews');
 const logout = require('./routes/logout');
+const forgetPassword = require('./routes/forgetPassword');
 
 require('./config/db');
 
@@ -31,6 +32,7 @@ app.use('/profile/edit',profileEdit);
 app.use('/booking',booking);
 app.use('/admin',admin);
 app.use('/reviews',reviews);
+app.use('/forgetpassword',forgetPassword)
 
 app.listen(4000,()=>{
     console.log('Book Wash servies');
