@@ -10,13 +10,13 @@ const mongoose = require('mongoose');
         },
         serviceStatus:{
             type:String,
-            default:"Pending"
+            default:"Awaiting Confirmation"
         }
     },
     DateOfPickUp: Date,
     DateOfService:Date,
     DateOfCarDrop:Date,
-    serviceStatus:{type:String,default:'pending'},
+    serviceStatus:{type:String,default:'Awaiting Confirmation'},
     bookingTime: {type:Date, default:Date.now}
  })
 
