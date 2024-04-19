@@ -15,8 +15,7 @@ async function sendEmail(to,subject,text,htmlFilePath,userName){
         const info = await transporter.sendMail(mailOption);
         return true;
     } catch (err){
-        console.error('Error sending email', err);
-        return false;
+        return res.status(500).json({message:"Internal server error!"});
     }
 }
 
