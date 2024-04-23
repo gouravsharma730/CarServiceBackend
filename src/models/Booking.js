@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
             default:"Awaiting Confirmation"
         }
     },
+    address:String,
     DateOfPickUp: Date,
     PickUpAddress:String,
     DateOfService:Date,
