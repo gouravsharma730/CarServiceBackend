@@ -4,13 +4,15 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
-const sendEmail = require('../utils/email');
-router.get('/',async function (req,res){
+const sendemail = require('../../utils/email');
+
+
+const adminHome = async function(req,res){
     const newBooking = await Booking.find({ServiceStatus:"pending"}).sort({bookingTime:1});
     return res.status(200).json({"message":newBooking});
-})
+}
 
-router.post('/',async function (req,res){
+const bookingResponse = async function(req,res){
     const _id= req.body._id;
     const serviceStatus = req.body.serviceStatus;
     const sendBookinngStatus = await Booking.findByIdAndUpdate(_id,{serviceStatus},{new:true});
@@ -27,7 +29,6 @@ router.post('/',async function (req,res){
         return res.send(500).json({message:"Enternal server error"});
     }
     return res.status(200).json({"message":sendBookinngStatus});
-})
+}
 
-
-module.exports = router;
+module.exports = {adminHome, bookingResponse}

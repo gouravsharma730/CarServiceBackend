@@ -6,15 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const verifyToken = require('../middleware/verifyToken');
 
-router.get('/',function(req,res){
-    try{
-        res.sendFile(path.join(__dirname,'../static','login.html'));
-    }catch(error){
-        res.status(500).json({error:'This error is from login page'});
-    }
-})
-
-router.post('/',verifyToken, async function(req,res){
+const login =  async function(req,res){
     try{
         if (!req.body || !req.body.email || !req.body.password){
             return res.status(400).json({ error: 'Missing email in request body!' });
@@ -31,7 +23,12 @@ router.post('/',verifyToken, async function(req,res){
     }catch(error){
         return res.status(500).json({message: error.message});
     }
-})
+}
+
+const logout = async function(req,res){
+    res.clearCookie('jwtToken');
+    res.status.json({message:"Logout successfully."});
+}
 
 
-module.exports = router;
+module.exports = {login, logout};
