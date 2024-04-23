@@ -14,6 +14,7 @@ const mongoose = require('mongoose');
         }
     },
     DateOfPickUp: Date,
+    PickUpAddress:String,
     DateOfService:Date,
     DateOfCarDrop:Date,
     serviceStatus:{type:String,default:'Awaiting Confirmation'},
