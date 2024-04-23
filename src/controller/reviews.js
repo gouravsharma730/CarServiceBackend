@@ -3,21 +3,22 @@ const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const Reviews = require('../models/RatingAndReview')
 
-router.post('/',verifyToken,(req,res)=>{
+
+const sendReview = async function(req,res){
     let review = req.body;
     if(!review) return res.status(400).json({message:"Please add comment!"});
     review.userName = req.user.userName;
     const reviews = new Reviews(review);
     reviews.save();
     return res.status(200).json({message:review});
-})
+}
 
-router.get('/',verifyToken, async function (req,res){
+const getReviews =  async function (req,res){
     const reviews = await Reviews.find({});
     return res.status(200).json({message:reviews});
-})
+}
 
-router.post('/comment',verifyToken,async function(req,res){
+const commentOnReview = async function(req,res){
     try{
         const comments = req.body;
         comments.user = req.user.id; 
@@ -30,9 +31,9 @@ router.post('/comment',verifyToken,async function(req,res){
     }catch(error){
         return res.status(400).json({message:error.message});
     }
-})
+}
 
-router.post('/likes',verifyToken,async function (req,res){
+const likeOnreview = async function(req,res){
     try{
         const user = req.user.id;
         const _id = req.body._id;
@@ -55,9 +56,9 @@ router.post('/likes',verifyToken,async function (req,res){
     }catch(error){
         return res.status(400).json({message:error.message})
     }
-})
+}
 
-router.post('/dislikes',verifyToken,async function (req,res){
+const disLikeOnReview = async function(req,res){
     try{
         const user = req.user.id;
         const _id = req.body._id;
@@ -80,7 +81,6 @@ router.post('/dislikes',verifyToken,async function (req,res){
     }catch(error){
         return res.status(400).json({message:error.message})
     }
-})
+}
 
-
-module.exports = router;
+module.exports={sendReview,getReviews, commentOnReview, likeOnreview, disLikeOnReview}
