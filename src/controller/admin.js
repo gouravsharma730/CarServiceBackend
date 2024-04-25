@@ -4,12 +4,34 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
-const sendemail = require('../../utils/email');
+const sendEmail = require('../../utils/email');
 
 
 const adminHome = async function(req,res){
-    const newBooking = await Booking.find({ServiceStatus:"pending"}).sort({bookingTime:1});
-    return res.status(200).json({"message":newBooking});
+    const pipeline = [
+        {
+          $facet: {
+            pendingBookings: [
+              { $match: { serviceStatus: "Awaiting Confirmation" } },
+              { $sort: { bookingTime: 1 } }
+            ],
+            otherBookings: [
+              { $match: { serviceStatus: { $ne: "Awaiting Confirmation" } } },
+              { $sort: { bookingTime: 1 } }
+            ]
+          }
+        },
+        {
+          $project: {
+            bookings: {
+              $concatArrays: ["$pendingBookings", "$otherBookings"]
+            }
+          }
+        }
+      ];
+      
+      const result = await Booking.aggregate(pipeline);
+    return res.status(200).json({"message":result});
 }
 
 const bookingResponse = async function(req,res){

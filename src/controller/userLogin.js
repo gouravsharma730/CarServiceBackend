@@ -5,6 +5,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const verifyToken = require('../middleware/verifyToken');
+const Booking = require('../models/Booking');
 
 const login =  async function(req,res){
     try{
@@ -19,7 +20,8 @@ const login =  async function(req,res){
         const matchPassword = await bcrypt.compare(req.body.password,userCheck[0]['password']);
         if(!matchPassword) return res.status(201).json({message:"Incorrect password"});
         const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
-        return res.status(201).json({message:userCheck,token});
+        const message = userCheck;
+        return res.status(201).json({message,token});
     }catch(error){
         return res.status(500).json({message: error.message});
     }
