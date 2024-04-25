@@ -20,7 +20,7 @@ router.post('/review', verifyToken, reviewController.sendReview);
 router.get('/reviews',verifyToken,reviewController.getReviews);
 router.post('/commentReview', verifyToken,reviewController.commentOnReview);
 router.post('/likeReview',verifyToken,reviewController.likeOnreview);
-router.post('./dislikeReview',verifyToken,reviewController.disLikeOnReview);
+router.post('/dislikeReview',verifyToken,reviewController.disLikeOnReview);
 router.post('/forgetPassword',profileUpdateController.forgetPassword);
 router.post('/newBooking', verifyToken,bookingController.bookService);
 router.get('/bookingHistory', verifyToken,bookingController.getBookingHistory);
