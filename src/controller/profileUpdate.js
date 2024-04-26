@@ -2,22 +2,25 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const path = require('path');
-const sendemail = require('../../utils/email');
+const sendEmail = require('../../utils/email');
 const bcrypt = require('bcrypt');
-const resetPasswordHTML = path.join(__dirname,'../static/resetPassword.html');
-const forgetPasswordHTML = path.join(__dirname,'../static/forgetPassword.html');
+const resetPasswordHTML = path.join(__dirname,'../../static/resetPassword.html');
+const forgetPasswordHTML = path.join(__dirname,'../../static/forgetPassword.html');
 const jwt = require('jsonwebtoken');
 
 const forgetPassword = async function(req,res){
-    const email = req.body.email;
-    let userCheck = await User.find({email});
-    if(userCheck.length==0) return res.status(404).json({message:"Invalid Email address!"})
-    const subject= 'Password Change Request: Action Required'
-    const text = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
-    const response = await sendEmail(email,subject,text,forgetPasswordHTML,userCheck[0].userName);
-    const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
-
-    return res.status(201).json({message:response,token});
+    try{
+        const email = req.body.email;
+        let userCheck = await User.find({email});
+        if(userCheck.length==0) return res.status(404).json({message:"Invalid Email address!"})
+        const token = await jwt.sign({email:email}, 'your_secret_key', { expiresIn: '700h' });
+        const subject= 'Password Change Request: Action Required'
+        const text = '';
+        const response = await sendEmail(email,subject,text,forgetPasswordHTML,userCheck[0].userName);
+        return res.status(201).json({message:response,token});
+    }catch(err){
+        return err.status(500).json({message:err});
+    }
 }
 
 const profileUpdate = async function(req,res){
@@ -31,17 +34,18 @@ const profileUpdate = async function(req,res){
 
 const resetPassword =  async function(req,res){
     try{
-        const _id = req.user.id;
+        const email = req.user.email;
         const profileUpdate = req.body.password;
         const password = await bcrypt.hash(profileUpdate,10);
-        const checkUpdate = await User.findByIdAndUpdate(_id,{password},{new:true});
+        const checkUpdate = await User.findOneAndUpdate({email},{password},{new:true});
+        const token = await jwt.sign({ id: checkUpdate._id, userName: checkUpdate.userName, email: checkUpdate.email}, 'your_secret_key', { expiresIn: '700h' });
         if(!checkUpdate) return res.status(404).json({message:"User not found"});
         const message = [{message:"Profile updated successfully"},checkUpdate];
         const subject = "Password Reset Successful";
-        await sendemail(req.user.email,subject,'',resetPasswordHTML,req.user.userName);
-        return res.status(200).json({message:req.body});        
+        await sendEmail(req.user.email,subject,'',resetPasswordHTML,req.user.userName);
+        return res.status(200).json({message,token});        
     }catch(err){
-        return res.status(500).json({message:"Internal server error"});
+        return res.status(500).json({message:err});
     }
 }
 

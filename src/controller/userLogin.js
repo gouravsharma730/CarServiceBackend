@@ -19,7 +19,7 @@ const login =  async function(req,res){
         }
         const matchPassword = await bcrypt.compare(req.body.password,userCheck[0]['password']);
         if(!matchPassword) return res.status(201).json({message:"Incorrect password"});
-        const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: '700h' });
+        const token = await jwt.sign({ id: userCheck[0]._id, userName: userCheck[0].userName, email: userCheck[0].email}, 'your_secret_key', { expiresIn: Math.floor(Date.now() / 1000) + (36500 * 24 * 60 * 60) });
         const message = userCheck;
         return res.status(201).json({message,token});
     }catch(error){

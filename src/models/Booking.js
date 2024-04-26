@@ -14,10 +14,10 @@ const mongoose = require('mongoose');
         }
     },
     address:String,
-    DateOfPickUp: Date,
-    PickUpAddress:String,
-    DateOfService:Date,
-    DateOfCarDrop:Date,
+    dateOfPickUp: Date,
+    pickUpAddress:String,
+    dateOfService:Date,
+    dateOfCarDrop:Date,
     serviceStatus:{type:String,default:'Awaiting Confirmation'},
     bookingTime: {type:Date, default:Date.now}
  })
