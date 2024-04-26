@@ -9,15 +9,18 @@ const forgetPasswordHTML = path.join(__dirname,'../../static/forgetPassword.html
 const jwt = require('jsonwebtoken');
 
 const forgetPassword = async function(req,res){
-    const email = req.body.email;
-    let userCheck = await User.find({email});
-    if(userCheck.length==0) return res.status(404).json({message:"Invalid Email address!"})
-    const token = await jwt.sign({email:email}, 'your_secret_key', { expiresIn: '700h' });
-    console.log('forgetPasswordB',token);
-    const subject= 'Password Change Request: Action Required'
-    const text = '';
-    const response = await sendEmail(email,subject,text,forgetPasswordHTML,userCheck[0].userName);
-    return res.status(201).json({message:response,token});
+    try{
+        const email = req.body.email;
+        let userCheck = await User.find({email});
+        if(userCheck.length==0) return res.status(404).json({message:"Invalid Email address!"})
+        const token = await jwt.sign({email:email}, 'your_secret_key', { expiresIn: '700h' });
+        const subject= 'Password Change Request: Action Required'
+        const text = '';
+        const response = await sendEmail(email,subject,text,forgetPasswordHTML,userCheck[0].userName);
+        return res.status(201).json({message:response,token});
+    }catch(err){
+        return err.status(500).json({message:err});
+    }
 }
 
 const profileUpdate = async function(req,res){

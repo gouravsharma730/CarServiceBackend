@@ -24,7 +24,8 @@ router.post('/dislikeReview',verifyToken,reviewController.disLikeOnReview);
 router.post('/forgetPassword',profileUpdateController.forgetPassword);
 router.post('/newBooking', verifyToken,bookingController.bookService);
 router.get('/bookingHistory', verifyToken,bookingController.getBookingHistory);
-router.post('/adminHome',verifyToken,adminController.adminHome);
+router.get('/adminHome',verifyToken,adminController.adminHome);
+router.post('/bookingresponse',verifyToken,adminController.bookingResponse);
 
 
 module.exports= router;

@@ -49,7 +49,7 @@ const bookService = async function(req, res) {
       });
       for (let i = 0; i < bookingHistory.length; i++) {
         let temp = {};
-        const fullDate = new Date(bookingHistory[i]["DateOfPickUp"]);
+        const fullDate = new Date(bookingHistory[i]["dateOfPickUp"]);
         let date = fullDate.getDate();
         let month = fullDate.getMonth() + 1;
         let year = fullDate.getFullYear();
@@ -62,9 +62,10 @@ const bookService = async function(req, res) {
         temp._id = bookingHistory[i]["id"];
         response.push(temp);
       }
+      // console.log(response);
       return res.status(200).json({ message: response });
     } catch (err) {
-      return console.log(err);
+      return res.status(500).json({message:"Internal server error"});
     }
   }
 
