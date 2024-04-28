@@ -5,12 +5,13 @@ const Reviews = require('../models/RatingAndReview')
 
 
 const sendReview = async function(req,res){
-    let review = req.body;
-    if(!review) return res.status(400).json({message:"Please add comment!"});
-    review.userName = req.user.userName;
-    const reviews = new Reviews(review);
+    let content = req.body.comment;
+    let userName = req.user.userName;
+    let rating = req.body.rating;
+    if(!req.body.comment) return res.status(400).json({message:"Please add comment!"});
+    const reviews = new Reviews({content,userName,rating});
     reviews.save();
-    return res.status(200).json({message:review});
+    return res.status(200).json({message:"Thank you for your review."});
 }
 
 const getReviews =  async function (req,res){
@@ -52,7 +53,7 @@ const likeOnreview = async function(req,res){
                     likes:user
                 }},{new:true});
             }
-        return res.status(200).json({message:incLike});
+            return res.status(200).json({message:incLike.likes});
     }catch(error){
         return res.status(400).json({message:error.message})
     }
@@ -77,7 +78,7 @@ const disLikeOnReview = async function(req,res){
                     dislikes:user
                 }},{new:true});
             }
-        return res.status(200).json({message:incDislikes});
+        return res.status(200).json({message:incDislikes.dislikes});
     }catch(error){
         return res.status(400).json({message:error.message})
     }
