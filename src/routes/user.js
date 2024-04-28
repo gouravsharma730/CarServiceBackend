@@ -17,7 +17,7 @@ router.post('/signup',signUpController.signUp);
 router.post('/profileUpdate',verifyToken,profileUpdateController.profileUpdate);
 router.post('/resetpassword',verifyToken,profileUpdateController.resetPassword);
 router.post('/review', verifyToken, reviewController.sendReview);
-router.get('/reviews',verifyToken,reviewController.getReviews);
+router.get('/reviews',reviewController.getReviews);
 router.post('/commentReview', verifyToken,reviewController.commentOnReview);
 router.post('/likeReview',verifyToken,reviewController.likeOnreview);
 router.post('/dislikeReview',verifyToken,reviewController.disLikeOnReview);
