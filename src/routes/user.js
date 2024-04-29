@@ -11,7 +11,7 @@ const bookingController = require('../controller/booking');
 const adminController = require('../controller/admin');
 
 router.get('/home',verifyToken,homePageController.homePage);
-router.post('/login',verifyToken,loginController.login);
+router.post('/login',loginController.login);
 router.post('/logout',verifyToken,loginController.logout);
 router.post('/signup',signUpController.signUp);
 router.post('/profileUpdate',verifyToken,profileUpdateController.profileUpdate);
