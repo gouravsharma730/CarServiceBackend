@@ -24,12 +24,16 @@ const forgetPassword = async function(req,res){
 }
 
 const profileUpdate = async function(req,res){
-    const _id = req.user.id;
-    const profileUpdate = req.body;
-    const checkUpdate = await User.findByIdAndUpdate(_id,profileUpdate,{new:true});
-    if(!checkUpdate) return res.status(404).json({message:"User not found"});
-    const message = [{message:"Profile updated successfully"},{data:checkUpdate}];
-    res.status(200).json({message:message});
+    try{
+        const _id = req.user.id;
+        const profileUpdate = req.body;
+        const checkUpdate = await User.findByIdAndUpdate(_id,profileUpdate,{new:true});
+        if(!checkUpdate) return res.status(404).json({message:"User not found"});
+        const message = [{message:"Profile updated successfully"},{data:checkUpdate}];
+        res.status(200).json({message:message});
+        }catch(error){
+        return res.status(500).json({message: error.message});
+        }
 }
 
 const resetPassword =  async function(req,res){

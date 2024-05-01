@@ -5,18 +5,26 @@ const Reviews = require('../models/RatingAndReview')
 
 
 const sendReview = async function(req,res){
-    let content = req.body.comment;
-    let userName = req.user.userName;
-    let rating = req.body.rating;
-    if(!req.body.comment) return res.status(400).json({message:"Please add comment!"});
-    const reviews = new Reviews({content,userName,rating});
-    reviews.save();
-    return res.status(200).json({message:"Thank you for your review."});
+    try{
+        let content = req.body.comment;
+        let userName = req.user.userName;
+        let rating = req.body.rating;
+        if(!req.body.comment) return res.status(400).json({message:"Please add comment!"});
+        const reviews = new Reviews({content,userName,rating});
+        reviews.save();
+        return res.status(200).json({message:"Thank you for your review."});
+    }catch(error){
+        return res.status(500).json({message: error.message});
+    }
 }
 
 const getReviews =  async function (req,res){
-    const reviews = await Reviews.find({});
-    return res.status(200).json({message:reviews});
+    try{
+        const reviews = await Reviews.find({});
+        return res.status(200).json({message:reviews});
+    }catch(error){
+        return res.status(500).json({message: error.message});
+    }
 }
 
 const commentOnReview = async function(req,res){
