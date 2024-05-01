@@ -28,8 +28,12 @@ const login =  async function(req,res){
 }
 
 const logout = async function(req,res){
-    res.clearCookie('jwtToken');
-    res.status.json({message:"Logout successfully."});
+    try{
+        res.clearCookie('jwtToken');
+        res.status.json({message:"Logout successfully."});
+    }catch(error){
+        return res.status(500).json({message: error.message});
+    }
 }
 
 
