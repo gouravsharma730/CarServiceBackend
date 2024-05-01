@@ -3,7 +3,7 @@ const app =  express();
 require('dotenv').config();
 require('../config/db');
 const cors = require('cors');
-const port = process.env.port;
+const port = 4000;
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', process.env.frontendURL);
