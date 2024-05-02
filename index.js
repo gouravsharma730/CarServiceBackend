@@ -1,7 +1,7 @@
 const express =  require('express');
 const app =  express();
 require('dotenv').config();
-require('./config/db');
+require('../config/db');
 const cors = require('cors');
 const port = 4000;
 
@@ -17,15 +17,12 @@ app.use(cors({
   credentials: true
 }));
 
-const userRoutes = require('./src/routes/user');
+const userRoutes = require('./routes/user');
 
 const path = require('path');
 app.use(express.json());
 app.use(express.static(path.join(__dirname,'static')))
-app.use('/',((req, res)=>{
-  res.status(200).send({message : "working"})
-}));
-// app.use('/',userRoutes);
+app.use('/',userRoutes);
 
 
 app.listen(port,()=>{
