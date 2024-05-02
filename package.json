@@ -2,10 +2,10 @@
   "name": "washservice",
   "version": "1.0.0",
   "description": "App to book your car wash",
-  "main": "./src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./src/index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
