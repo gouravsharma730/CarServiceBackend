@@ -1,7 +1,7 @@
 const express =  require('express');
 const app =  express();
 require('dotenv').config();
-require('../config/db');
+require('./config/db');
 const cors = require('cors');
 const port = 4000;
 
@@ -17,7 +17,7 @@ app.use(cors({
   credentials: true
 }));
 
-const userRoutes = require('./routes/user');
+const userRoutes = require('./src/routes/user');
 
 const path = require('path');
 app.use(express.json());
