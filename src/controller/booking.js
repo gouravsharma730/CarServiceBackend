@@ -55,7 +55,7 @@ const bookService = async function(req, res) {
         let year = fullDate.getFullYear();
         temp.carNumber = bookingHistory[i]["carDetails"]["carNumber"];
         temp.serviceType = bookingHistory[i]["carDetails"]["serviceType"];
-        temp.serviceStatus = bookingHistory[i]["carDetails"]["serviceStatus"];
+        temp.serviceStatus = bookingHistory[i]["serviceStatus"];
         temp.dateOfPickUp = `${year}-${month < 10 ? "0" : ""}${month}-${
           date < 10 ? "0" : ""
         }${date}`;
