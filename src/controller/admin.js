@@ -8,9 +8,10 @@ const sendEmail = require('../../utils/email');
 
 const adminHome = async function(req,res){
   try{
-    const pendingBookings = await Booking.find({}).sort({ serviceStatus: 1 });
-    return res.status(200).json({"message":pendingBookings});
-  }catch(err){
+    const pendingBookings = await Booking.find({serviceStatus:'Affirmation pending'});
+    const totalBookings = await Booking.find({}).sort({'bookingTime.date':1});
+    return res.status(200).json({"message":{pendingBookings,totalBookings}});
+  }catch(error){
     return res.status(500).json({message: error.message});
   }
 }
